@@ -1,113 +1,64 @@
 package org.mp.sesion03.matriz;
 
-public abstract class MatrizGenerica<T extends Number> {
+public abstract class MatrizGenerica<T> {
 
-    protected T[][] matriz;
+    protected Object[][] matriz; // <-- usar Object en lugar de T[][]
     protected int filas;
     protected int columnas;
 
-    @SuppressWarnings("unchecked")
     public MatrizGenerica(int filas, int columnas) {
-
         this.filas = filas;
         this.columnas = columnas;
 
-        matriz = (T[][]) new Number[filas][columnas];
+        matriz = new Object[filas][columnas]; // Object[][] funciona perfectamente
 
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
+        // Rellenar con ceroElemento()
+        for (int i = 0; i < filas; i++)
+            for (int j = 0; j < columnas; j++)
                 matriz[i][j] = ceroElemento();
-            }
-        }
-    }
-
-    public void setValor(int fila, int columna, T valor) {
-        matriz[fila][columna] = valor;
-    }
-
-    public T[][] getMatriz() {
-        return matriz;
-    }
-
-    public MatrizGenerica<T> sumar(MatrizGenerica<T> otra) {
-
-        MatrizGenerica<T> resultado = crearMatriz(filas, columnas);
-
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-
-                resultado.matriz[i][j] =
-                        sumarElementos(matriz[i][j], otra.matriz[i][j]);
-
-            }
-        }
-
-        return resultado;
-    }
-
-    public MatrizGenerica<T> multiplicar(MatrizGenerica<T> otra) {
-
-        MatrizGenerica<T> resultado = crearMatriz(filas, otra.columnas);
-
-        for (int i = 0; i < filas; i++) {
-
-            for (int j = 0; j < otra.columnas; j++) {
-
-                T suma = ceroElemento();
-
-                for (int k = 0; k < columnas; k++) {
-
-                    suma = sumarElementos(
-                            suma,
-                            multiplicarElementos(
-                                    matriz[i][k],
-                                    otra.matriz[k][j]
-                            )
-                    );
-                }
-
-                resultado.matriz[i][j] = suma;
-            }
-        }
-
-        return resultado;
-    }
-
-    public MatrizGenerica<T> transponer() {
-
-        MatrizGenerica<T> resultado = crearMatriz(columnas, filas);
-
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-                resultado.matriz[j][i] = matriz[i][j];
-            }
-        }
-
-        return resultado;
-    }
-
-    @Override
-    public String toString() {
-
-        String texto = "";
-
-        for (int i = 0; i < filas; i++) {
-
-            for (int j = 0; j < columnas; j++) {
-                texto += matriz[i][j] + " ";
-            }
-
-            texto += "\n";
-        }
-
-        return texto;
     }
 
     protected abstract MatrizGenerica<T> crearMatriz(int filas, int columnas);
 
     protected abstract T sumarElementos(T a, T b);
-
     protected abstract T multiplicarElementos(T a, T b);
-
     protected abstract T ceroElemento();
+
+    // Setter y getter
+    public void setValor(int fila, int columna, T valor) {
+        matriz[fila][columna] = valor;
+    }
+
+    @SuppressWarnings("unchecked")
+    public T getValor(int fila, int columna) {
+        return (T) matriz[fila][columna]; // cast seguro
+    }
+
+    @SuppressWarnings("unchecked")
+    public T[][] getMatriz() {
+        return (T[][]) matriz; // cast seguro para uso en tests
+    }
+
+    public MatrizGenerica<T> sumar(MatrizGenerica<T> otra) {
+        if (otra.filas != filas || otra.columnas != columnas)
+            throw new IllegalArgumentException("Dimensiones distintas");
+
+        MatrizGenerica<T> res = crearMatriz(filas, columnas);
+
+        for (int i = 0; i < filas; i++)
+            for (int j = 0; j < columnas; j++)
+                res.setValor(i, j, sumarElementos(getValor(i,j), otra.getValor(i,j)));
+
+        return res;
+    }
+
+    public MatrizGenerica<T> transponer() {
+        MatrizGenerica<T> t = crearMatriz(columnas, filas);
+
+        for (int i = 0; i < filas; i++)
+            for (int j = 0; j < columnas; j++)
+                t.setValor(j, i, getValor(i,j));
+
+        return t;
+    }
 }

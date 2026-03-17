@@ -2,12 +2,10 @@ package org.mp.sesion01.listareproduccion;
 
 public class ListaDeReproduccion {
 
-    private String nombre;
     private Cancion[] canciones;
     private int numCanciones;
 
     public ListaDeReproduccion(String nombre, int capacidadMaxima) {
-        this.nombre = nombre;
         this.canciones = new Cancion[capacidadMaxima];
         this.numCanciones = 0;
     }

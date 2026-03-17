@@ -1,6 +1,5 @@
 package org.mp.sesion02;
 
-import java.util.Objects;
 
 /**
  * Representa un álbum musical.
