@@ -1,20 +1,11 @@
 package org.mp.sesion05.colas;
 
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 public class LinkedListQueue<E> implements Queue<E> {
 
     private LinkedList<E> list = new LinkedList<>();
-
-    @Override
-    public int size() {
-        return list.size();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return list.isEmpty();
-    }
 
     @Override
     public void enqueue(E element) {
@@ -23,11 +14,17 @@ public class LinkedListQueue<E> implements Queue<E> {
 
     @Override
     public E dequeue() {
-        return list.pollFirst(); // devuelve null si está vacía ✔
+        if (isEmpty()) throw new NoSuchElementException();
+        return list.removeFirst();
     }
 
     @Override
-    public E front() {
-        return list.peekFirst(); // devuelve null si está vacía ✔
+    public int getSize() {
+        return list.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return list.isEmpty();
     }
 }

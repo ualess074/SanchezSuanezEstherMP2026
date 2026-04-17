@@ -1,38 +1,50 @@
 package org.mp.sesion05.pilas;
 
+import java.util.NoSuchElementException;
+
 public class ArrayStack<E> implements Stack<E> {
+
     private E[] data;
-    private int top;
+    private int size;
 
-    public ArrayStack(int capacity) {
-        data = (E[]) new Object[capacity];
-        top = -1;
+    public ArrayStack() {
+        data = (E[]) new Object[10];
+        size = 0;
     }
 
-    @Override
-    public int getSize() {
-        return top + 1;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return top == -1;
+    private void resize() {
+        E[] newData = (E[]) new Object[data.length * 2];
+        System.arraycopy(data, 0, newData, 0, size);
+        data = newData;
     }
 
     @Override
     public void push(E element) {
-        data[++top] = element;
+        if (size == data.length) resize();
+        data[size++] = element;
     }
 
     @Override
     public E pop() {
-        if (isEmpty()) return null;
-        return data[top--];
+        if (isEmpty()) throw new NoSuchElementException();
+        E val = data[--size];
+        data[size] = null;
+        return val;
     }
 
     @Override
     public E peek() {
-        if (isEmpty()) return null;
-        return data[top];
+        if (isEmpty()) throw new NoSuchElementException();
+        return data[size - 1];
+    }
+
+    @Override
+    public int getSize() {
+        return size;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
     }
 }

@@ -1,41 +1,32 @@
 package org.mp.sesion05.colas;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class NodeQueueTest {
 
     @Test
-    void testEnqueueDequeue() {
-        Queue<Integer> queue = new NodeQueue<>();
+    public void testEnqueueAndDequeue() {
+        Queue<Double> queue = new NodeQueue<>();
+        queue.enqueue(1.1);
+        queue.enqueue(2.2);
+        queue.enqueue(3.3);
 
-        queue.enqueue(1);
-        queue.enqueue(2);
-
-        assertEquals(1, queue.dequeue());
-        assertEquals(2, queue.dequeue());
+        assertEquals(1.1, queue.dequeue(), 0.0001);
+        assertEquals(2.2, queue.dequeue(), 0.0001);
+        assertEquals(3.3, queue.dequeue(), 0.0001);
     }
 
     @Test
-    void testFront() { // ✔ antes peek
-        Queue<Integer> queue = new NodeQueue<>();
+    public void testGetSize() {
+        Queue<Character> queue = new NodeQueue<>();
+        assertEquals(0, queue.getSize());
 
-        queue.enqueue(10);
-        assertEquals(10, queue.front());
-    }
+        queue.enqueue('A');
+        queue.enqueue('B');
+        assertEquals(2, queue.getSize());
 
-    @Test
-    void testEmpty() {
-        Queue<Integer> queue = new NodeQueue<>();
-        assertTrue(queue.isEmpty());
-    }
-
-    @Test
-    void testSize() { // ✔ antes getSize
-        Queue<Integer> queue = new NodeQueue<>();
-        queue.enqueue(1);
-        queue.enqueue(2);
-
-        assertEquals(2, queue.size());
+        queue.dequeue();
+        assertEquals(1, queue.getSize());
     }
 }

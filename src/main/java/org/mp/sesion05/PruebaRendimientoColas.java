@@ -40,21 +40,16 @@ public class PruebaRendimientoColas {
 
         for (int n : tamaños) {
 
-            // ArrayQueue: cola circular → O(1)
-            probarQueue(new ArrayQueue<>(n), n, "ArrayQueue");
+            // ArrayQueue → O(1)
+            probarQueue(new ArrayQueue<>(), n, "ArrayQueue");
 
-            // NodeQueue: nodos con referencia a inicio y fin → O(1)
+            // NodeQueue → O(1)
             probarQueue(new NodeQueue<>(), n, "NodeQueue");
 
-            // LinkedListQueue: usa java.util.LinkedList (doblemente enlazada)
-            // Operaciones eficientes en ambos extremos → O(1)
+            // LinkedListQueue → O(1)
             probarQueue(new LinkedListQueue<>(), n, "LinkedListQueue");
 
             System.out.println("-----------------------------------");
-            
-         // LinkedListQueue no tiene problemas de rendimiento porque usa
-         // una lista doblemente enlazada (java.util.LinkedList),
-         // lo que permite insertar y eliminar en O(1).
         }
     }
 }

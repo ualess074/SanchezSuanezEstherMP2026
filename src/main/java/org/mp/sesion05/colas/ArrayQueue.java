@@ -1,36 +1,32 @@
 package org.mp.sesion05.colas;
 
+import java.util.NoSuchElementException;
+
 public class ArrayQueue<E> implements Queue<E> {
 
     private E[] data;
-    private int front;
-    private int rear;
-    private int size;
+    private int front, rear, size;
 
-    @SuppressWarnings("unchecked")
-    public ArrayQueue(int capacity) {
-        data = (E[]) new Object[capacity];
+    public ArrayQueue() {
+        data = (E[]) new Object[10];
         front = 0;
         rear = 0;
         size = 0;
     }
 
-    @Override
-    public int size() {
-        return size;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return size == 0;
+    private void resize() {
+        E[] newData = (E[]) new Object[data.length * 2];
+        for (int i = 0; i < size; i++) {
+            newData[i] = data[(front + i) % data.length];
+        }
+        data = newData;
+        front = 0;
+        rear = size;
     }
 
     @Override
     public void enqueue(E element) {
-        if (size == data.length) {
-            throw new RuntimeException("Queue llena"); // ✔ evita error silencioso
-        }
-
+        if (size == data.length) resize();
         data[rear] = element;
         rear = (rear + 1) % data.length;
         size++;
@@ -38,18 +34,20 @@ public class ArrayQueue<E> implements Queue<E> {
 
     @Override
     public E dequeue() {
-        if (isEmpty()) return null;
-
-        E value = data[front];
-        data[front] = null; // ✔ evita memory leak
+        if (isEmpty()) throw new NoSuchElementException();
+        E val = data[front];
         front = (front + 1) % data.length;
         size--;
-
-        return value;
+        return val;
     }
 
     @Override
-    public E front() {
-        return isEmpty() ? null : data[front];
+    public int getSize() {
+        return size;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
     }
 }

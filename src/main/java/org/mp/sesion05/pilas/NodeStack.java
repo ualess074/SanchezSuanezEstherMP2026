@@ -1,18 +1,42 @@
 package org.mp.sesion05.pilas;
 
+import java.util.NoSuchElementException;
+
 public class NodeStack<E> implements Stack<E> {
 
     private class Node {
         E data;
         Node next;
 
-        Node(E data) {
+        Node(E data, Node next) {
             this.data = data;
+            this.next = next;
         }
     }
 
     private Node top;
     private int size;
+
+    @Override
+    public void push(E element) {
+        top = new Node(element, top);
+        size++;
+    }
+
+    @Override
+    public E pop() {
+        if (isEmpty()) throw new NoSuchElementException();
+        E val = top.data;
+        top = top.next;
+        size--;
+        return val;
+    }
+
+    @Override
+    public E peek() {
+        if (isEmpty()) throw new NoSuchElementException();
+        return top.data;
+    }
 
     @Override
     public int getSize() {
@@ -21,28 +45,6 @@ public class NodeStack<E> implements Stack<E> {
 
     @Override
     public boolean isEmpty() {
-        return top == null;
-    }
-
-    @Override
-    public void push(E element) {
-        Node newNode = new Node(element);
-        newNode.next = top;
-        top = newNode;
-        size++;
-    }
-
-    @Override
-    public E pop() {
-        if (isEmpty()) return null;
-        E value = top.data;
-        top = top.next;
-        size--;
-        return value;
-    }
-
-    @Override
-    public E peek() {
-        return isEmpty() ? null : top.data;
+        return size == 0;
     }
 }

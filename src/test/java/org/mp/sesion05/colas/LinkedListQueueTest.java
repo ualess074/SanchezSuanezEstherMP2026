@@ -1,41 +1,32 @@
 package org.mp.sesion05.colas;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LinkedListQueueTest {
 
     @Test
-    void testEnqueueDequeue() {
+    public void testEnqueueAndDequeue() {
+        Queue<String> queue = new LinkedListQueue<>();
+        queue.enqueue("Uno");
+        queue.enqueue("Dos");
+        queue.enqueue("Tres");
+
+        assertEquals("Uno", queue.dequeue());
+        assertEquals("Dos", queue.dequeue());
+        assertEquals("Tres", queue.dequeue());
+    }
+
+    @Test
+    public void testGetSize() {
         Queue<Integer> queue = new LinkedListQueue<>();
+        assertEquals(0, queue.getSize());
 
         queue.enqueue(1);
         queue.enqueue(2);
+        assertEquals(2, queue.getSize());
 
-        assertEquals(1, queue.dequeue());
-        assertEquals(2, queue.dequeue());
-    }
-
-    @Test
-    void testFront() { // ✔ antes peek
-        Queue<Integer> queue = new LinkedListQueue<>();
-
-        queue.enqueue(20);
-        assertEquals(20, queue.front());
-    }
-
-    @Test
-    void testEmpty() {
-        Queue<Integer> queue = new LinkedListQueue<>();
-        assertTrue(queue.isEmpty());
-    }
-
-    @Test
-    void testSize() { // ✔ antes getSize
-        Queue<Integer> queue = new LinkedListQueue<>();
-        queue.enqueue(3);
-        queue.enqueue(4);
-
-        assertEquals(2, queue.size());
+        queue.dequeue();
+        assertEquals(1, queue.getSize());
     }
 }

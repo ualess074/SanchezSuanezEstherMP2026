@@ -1,59 +1,45 @@
 package org.mp.sesion05.colas;
 
+import java.util.NoSuchElementException;
+
 public class NodeQueue<E> implements Queue<E> {
 
     private class Node {
         E data;
         Node next;
 
-        Node(E data) {
-            this.data = data;
-        }
+        Node(E d) { data = d; }
     }
 
-    private Node front;
-    private Node rear;
+    private Node front, rear;
     private int size;
 
     @Override
-    public int size() {
+    public void enqueue(E element) {
+        Node n = new Node(element);
+        if (rear != null) rear.next = n;
+        rear = n;
+        if (front == null) front = n;
+        size++;
+    }
+
+    @Override
+    public E dequeue() {
+        if (isEmpty()) throw new NoSuchElementException();
+        E val = front.data;
+        front = front.next;
+        if (front == null) rear = null;
+        size--;
+        return val;
+    }
+
+    @Override
+    public int getSize() {
         return size;
     }
 
     @Override
     public boolean isEmpty() {
         return size == 0;
-    }
-
-    @Override
-    public void enqueue(E element) {
-        Node newNode = new Node(element);
-        if (isEmpty()) {
-            front = rear = newNode;
-        } else {
-            rear.next = newNode;
-            rear = newNode;
-        }
-        size++;
-    }
-
-    @Override
-    public E dequeue() {
-        if (isEmpty()) return null;
-
-        E value = front.data;
-        front = front.next;
-        size--;
-
-        if (isEmpty()) { 
-            rear = null;
-        }
-
-        return value;
-    }
-
-    @Override
-    public E front() {
-        return isEmpty() ? null : front.data;
     }
 }
