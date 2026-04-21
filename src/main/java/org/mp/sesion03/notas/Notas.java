@@ -9,11 +9,26 @@ public class Notas {
 
     @SuppressWarnings("unchecked")
     public Notas(int capacidad) {
+        if (capacidad <= 0) {
+            throw new IllegalArgumentException("La capacidad máxima debe ser un número positivo.");
+        }
         calificaciones = new Par[capacidad];
         numCalificaciones = 0;
     }
+    
+    public int getNumeroNotas() {
+        return numCalificaciones;
+    }
 
     public boolean agregarNota(String idAlumno, Double nota) {
+
+        if (idAlumno == null || idAlumno.isEmpty() || nota == null) {
+            return false;
+        }
+
+        if (nota < 0 || nota > 10) {
+            return false;
+        }
 
         if (numCalificaciones >= calificaciones.length) {
             return false;
@@ -25,9 +40,7 @@ public class Notas {
             }
         }
 
-        calificaciones[numCalificaciones] = new Par<>(idAlumno, nota);
-        numCalificaciones++;
-
+        calificaciones[numCalificaciones++] = new Par<>(idAlumno, nota);
         return true;
     }
 
@@ -61,10 +74,18 @@ public class Notas {
 
     public String listarNotas() {
 
+        if (numCalificaciones == 0) {
+            return "No hay calificaciones registradas.";
+        }
+
         String resultado = "";
 
         for (int i = 0; i < numCalificaciones; i++) {
-            resultado += calificaciones[i].toString() + "\n";
+            resultado += "Alumno: " 
+                + calificaciones[i].getPrimero() 
+                + ", Nota: " 
+                + calificaciones[i].getSegundo() 
+                + "\n";
         }
 
         return resultado;

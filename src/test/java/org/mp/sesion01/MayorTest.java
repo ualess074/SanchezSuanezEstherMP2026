@@ -1,25 +1,59 @@
 package org.mp.sesion01;
 
+//import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.*;
+
+
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
-class MayorTest {
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+public class MayorTest {
 
     @Test
-    void testMayorNormal() {
-        int[] datos = {1, 5, 3, 9, 2};
-        assertEquals(9, Mayor.elEnteroMayor(datos));
+    @Order(1) 
+    public void testElEnteroMayorConArrayPositivo() {
+        int[] array = { 3, 7, 1, 9, 4 };
+        int resultado = Mayor.elEnteroMayor(array);
+        assertEquals(9, resultado);
     }
 
     @Test
-    void testMayorNegativos() {
-        int[] datos = {-10, -3, -50};
-        assertEquals(-3, Mayor.elEnteroMayor(datos));
+    @Order(2) 
+    public void testElEnteroMayorConArrayNegativo() {
+        int[] array = { -5, -2, -8, -1, -3 };
+        int resultado = Mayor.elEnteroMayor(array);
+        assertEquals(-1, resultado);
     }
 
     @Test
-    void testMayorUnSoloElemento() {
-        int[] datos = {7};
-        assertEquals(7, Mayor.elEnteroMayor(datos));
+    @Order(4) 
+    public void testElEnteroMayorConArrayConRepetidos() {
+        int[] array = { 2, 8, 5, 2, 8, 1, 5 };
+        int resultado = Mayor.elEnteroMayor(array);
+        assertEquals(8, resultado);
     }
+    
+    @Test
+    @Order(5) 
+    public void testElEnteroMayorConArrayConUnSoloElemento() {
+        int[] array = { 42 };
+        int resultado = Mayor.elEnteroMayor(array);
+        assertEquals(42, resultado);
+    }
+
+       
+    @Test
+	@Order(6)
+	public void testElEnteroMayorConArrayVacio() {
+		try {
+			Mayor.elEnteroMayor(new int[] {});
+			fail("Debería haber lanzado una excepción");
+		} catch (RuntimeException e) {
+			assertEquals(e.getMessage(), "Array vacio");
+			
+		}
+	}
 }

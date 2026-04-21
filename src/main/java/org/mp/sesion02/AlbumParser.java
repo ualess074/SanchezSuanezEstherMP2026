@@ -7,37 +7,42 @@ public class AlbumParser {
 
     public static Album parse(String datosAlbum) throws MiParseadoException {
 
-        try {
+        String[] partes = datosAlbum.split(";");
 
-            String[] partes = datosAlbum.split(";");
-
-            if (!partes[0].equals("ALBUM")) {
-                throw new MiParseadoException("Formato incorrecto");
-            }
-
-            String titulo = partes[1];
-            String artista = partes[2];
-            int año = Integer.parseInt(partes[3]);
-
-            Album album = new Album(titulo, artista, año, 20);
-
-            for (int i = 4; i < partes.length; i += 3) {
-
-                if (!partes[i].equals("CANCION")) {
-                    throw new MiParseadoException("Formato de canción incorrecto");
-                }
-
-                String tituloCancion = partes[i + 1];
-                int duracion = Integer.parseInt(partes[i + 2]);
-
-                album.agregarCancion(new Cancion(tituloCancion, duracion));
-            }
-
-            return album;
-
-        } catch (Exception e) {
-
-            throw new MiParseadoException("Error al parsear el álbum", e);
+        if (!partes[0].equals("ALBUM")) {
+            throw new MiParseadoException("Formato de álbum inválido");
         }
+
+        String titulo = partes[1];
+        String artista = partes[2];
+
+        int año;
+        try {
+            año = Integer.parseInt(partes[3]);
+        } catch (NumberFormatException e) {
+            throw new MiParseadoException("Año del álbum inválido: " + partes[3]);
+        }
+
+        Album album = new Album(titulo, artista, año, 20);
+
+        for (int i = 4; i < partes.length; i += 3) {
+
+            if (!partes[i].equals("CANCION")) {
+                throw new MiParseadoException("Formato de canción inválido en el álbum: ");
+            }
+
+            String tituloCancion = partes[i + 1];
+
+            int duracion;
+            try {
+                duracion = Integer.parseInt(partes[i + 2]);
+            } catch (NumberFormatException e) {
+                throw new MiParseadoException("Duración de la canción inválida: " + partes[i + 2]);
+            }
+
+            album.agregarCancion(new Cancion(tituloCancion, duracion));
+        }
+
+        return album;
     }
 }

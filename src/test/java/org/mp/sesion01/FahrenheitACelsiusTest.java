@@ -1,44 +1,87 @@
 package org.mp.sesion01;
 
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-class FahrenheitACelsiusTest {
+public class FahrenheitACelsiusTest {
+    FahrenheitACelsius fahrenheitACelsius;
 
     @Test
-    void testTemperaturaAmbiente() throws Exception {
-        assertEquals(20.00f, FahrenheitACelsius.convertir(68f));
+    public void testConvertirTemperaturaAmbiente() throws TemperaturaBajoCeroKelvinException {
+        fahrenheitACelsius = new FahrenheitACelsius();
+        float celsius;
+        float fahrenheit = 68;
+        float celsiusEsperado = 20;
+        
+        celsius = fahrenheitACelsius.convertir(fahrenheit);
+        assertEquals(celsiusEsperado, celsius);
     }
 
     @Test
-    void testCongelacion() throws Exception {
-        assertEquals(0.00f, FahrenheitACelsius.convertir(32f));
+    public void testConvertirPuntoCongelacion() throws TemperaturaBajoCeroKelvinException {
+        fahrenheitACelsius = new FahrenheitACelsius();
+        float celsius;
+        float fahrenheit = 32;
+        float celsiusEsperado = 0;
+        
+        celsius = fahrenheitACelsius.convertir(fahrenheit);
+        assertEquals(celsiusEsperado, celsius);
     }
 
     @Test
-    void testEbullicion() throws Exception {
-        assertEquals(100.00f, FahrenheitACelsius.convertir(212f));
+    public void testConvertirPuntoEbullicion() throws TemperaturaBajoCeroKelvinException {
+        fahrenheitACelsius = new FahrenheitACelsius();
+        float celsius;
+        float fahrenheit = 212;
+        float celsiusEsperado = 100;
+        
+        celsius = fahrenheitACelsius.convertir(fahrenheit);
+        assertEquals(celsiusEsperado, celsius);
     }
 
     @Test
-    void testTemperaturaNegativa() throws Exception {
-        assertEquals(-40.00f, FahrenheitACelsius.convertir(-40f));
+    public void testConvertirTemperaturaNegativa() throws TemperaturaBajoCeroKelvinException {
+        fahrenheitACelsius = new FahrenheitACelsius();
+        float celsius;
+        float fahrenheit = -40;
+        float celsiusEsperado = -40;
+        
+        celsius = fahrenheitACelsius.convertir(fahrenheit);
+        assertEquals(celsiusEsperado, celsius);
     }
 
     @Test
-    void testCeroAbsoluto() throws Exception {
-        assertEquals(-273.15f, FahrenheitACelsius.convertir(-459.67f));
+    public void testConvertirCeroAbsoluto() throws TemperaturaBajoCeroKelvinException {
+        fahrenheitACelsius = new FahrenheitACelsius();
+        float celsius;
+        float fahrenheit = -459.67f;
+        float celsiusEsperado = -273.15f;
+        
+        celsius = fahrenheitACelsius.convertir(fahrenheit);
+        assertEquals(celsiusEsperado, celsius);
     }
 
     @Test
-    void testTemperaturaAlta() throws Exception {
-        assertEquals(537.78f, FahrenheitACelsius.convertir(1000f));
+    public void testConvertirTemperaturaAlta() throws TemperaturaBajoCeroKelvinException {
+        fahrenheitACelsius = new FahrenheitACelsius();
+        float celsius;
+        float fahrenheit = 1000;
+        float celsiusEsperado = 537.78f;
+        
+        celsius = fahrenheitACelsius.convertir(fahrenheit);
+        assertEquals(celsiusEsperado, celsius);
     }
 
     @Test
-    void testExcepcion() {
-        assertThrows(TemperaturaBajoCeroKelvinException.class,
-                () -> FahrenheitACelsius.convertir(-500f));
+    public void testConvertirBajoCeroAbsoluto() {
+        fahrenheitACelsius = new FahrenheitACelsius();
+        float fahrenheit = -500;
+        
+        try {
+            fahrenheitACelsius.convertir(fahrenheit);
+            fail("Se esperaba una excepción TemperaturaBajoCeroKelvinException");
+        } catch (TemperaturaBajoCeroKelvinException excepcion) {
+            assertEquals("¡La temperatura no puede estar por debajo de 0 K!", excepcion.getMessage());
+        }
     }
 }
-

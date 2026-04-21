@@ -3,22 +3,56 @@ package org.mp.sesion03.pares;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ParTest {
+import java.time.LocalDate;
+
+/**
+ * Clase de prueba para la clase genérica Par.
+ */
+class ParTest {
 
     @Test
-    void testCrearPar() {
+    void testConstructorAndGetters() {
+        Par<String, Integer> par1 = new Par<>("Edad", 30);
+        assertEquals("Edad", par1.getPrimero());
+        assertEquals(30, par1.getSegundo());
 
-        Par<String,Integer> par = new Par<>("edad",25);
-
-        assertEquals("edad", par.getPrimero());
-        assertEquals(25, par.getSegundo());
+        Par<Double, Boolean> par2 = new Par<>(3.14, true);
+        assertEquals(3.14, par2.getPrimero());
+        assertTrue(par2.getSegundo());
     }
 
     @Test
     void testToString() {
+        Par<String, String> par = new Par<>("Hola", "Mundo");
+        assertEquals("(Hola, Mundo)", par.toString());
 
-        Par<String,Integer> par = new Par<>("A",10);
+        Par<Integer, LocalDate> parFecha = new Par<>(1, LocalDate.of(2023, 1, 1));
+        assertEquals("(1, 2023-01-01)", parFecha.toString());
+    }
 
-        assertEquals("(A, 10)", par.toString());
+    @Test
+    void testWithAcademicDomainExamples() {
+        // Identificador de Alumno y Calificación
+        Par<String, Double> calificacionAlumno = new Par<>("alu001", 8.75);
+        assertEquals("alu001", calificacionAlumno.getPrimero());
+        assertEquals(8.75, calificacionAlumno.getSegundo());
+
+        // Asignatura y Créditos
+        Par<String, Integer> asignaturaCreditos = new Par<>("Programación II", 6);
+        assertEquals("Programación II", asignaturaCreditos.getPrimero());
+        assertEquals(6, asignaturaCreditos.getSegundo());
+
+        // Fecha y Asistencia
+        Par<LocalDate, Integer> asistenciaClase = new Par<>(LocalDate.of(2026, 2, 10), 30);
+        assertEquals(LocalDate.of(2026, 2, 10), asistenciaClase.getPrimero());
+        assertEquals(30, asistenciaClase.getSegundo());
+    }
+
+    @Test
+    void testNullValues() {
+        Par<String, Integer> par = new Par<>(null, null);
+        assertNull(par.getPrimero());
+        assertNull(par.getSegundo());
+        assertEquals("(null, null)", par.toString());
     }
 }

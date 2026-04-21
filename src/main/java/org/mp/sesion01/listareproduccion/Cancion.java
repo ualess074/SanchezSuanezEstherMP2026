@@ -1,5 +1,7 @@
 package org.mp.sesion01.listareproduccion;
 
+import java.util.Objects;
+
 public class Cancion implements Comparable<Cancion> {
 
     private String titulo;
@@ -7,7 +9,6 @@ public class Cancion implements Comparable<Cancion> {
     private int duracion;
     private String genero;
 
-    // Constructor
     public Cancion(String titulo, String artista, int duracion, String genero) {
         this.titulo = titulo;
         this.artista = artista;
@@ -15,7 +16,23 @@ public class Cancion implements Comparable<Cancion> {
         this.genero = genero;
     }
 
-    // Método toString
+    // GETTERS (NECESARIOS PARA TESTS)
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public String getArtista() {
+        return artista;
+    }
+
+    public int getDuracion() {
+        return duracion;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
     @Override
     public String toString() {
         return "Cancion [titulo=" + titulo +
@@ -24,36 +41,26 @@ public class Cancion implements Comparable<Cancion> {
                 ", genero=" + genero + "]";
     }
 
-    // Método equals
+   
+
     @Override
     public boolean equals(Object o) {
-
-        if (this == o) {
-            return true;
-        }
-
-        if (!(o instanceof Cancion)) {
-            return false;
-        }
+        if (this == o) return true;
+        if (!(o instanceof Cancion)) return false;
 
         Cancion otra = (Cancion) o;
 
-        return titulo.equals(otra.titulo) &&
-               artista.equals(otra.artista) &&
-               duracion == otra.duracion &&
-               genero.equals(otra.genero);
+        return duracion == otra.duracion &&
+               Objects.equals(titulo, otra.titulo) &&
+               Objects.equals(artista, otra.artista) &&
+               Objects.equals(genero, otra.genero);
     }
 
-    // Método compareTo
     @Override
     public int compareTo(Cancion otra) {
-
-        // Primero ordenar por duración
         if (this.duracion != otra.duracion) {
             return this.duracion - otra.duracion;
         }
-
-        // Si duran lo mismo, ordenar por título
         return this.titulo.compareTo(otra.titulo);
     }
 }

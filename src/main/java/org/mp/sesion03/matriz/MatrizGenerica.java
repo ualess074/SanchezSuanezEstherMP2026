@@ -1,6 +1,6 @@
 package org.mp.sesion03.matriz;
 
-public abstract class MatrizGenerica<T> {
+public abstract class MatrizGenerica<T extends Number> {
 
     protected Object[][] matriz; // <-- usar Object en lugar de T[][]
     protected int filas;
@@ -16,6 +16,38 @@ public abstract class MatrizGenerica<T> {
         for (int i = 0; i < filas; i++)
             for (int j = 0; j < columnas; j++)
                 matriz[i][j] = ceroElemento();
+    }
+    
+    public MatrizGenerica<T> multiplicar(MatrizGenerica<T> otra) {
+
+        if (this.columnas != otra.filas) {
+            throw new IllegalArgumentException("Dimensiones incompatibles");
+        }
+
+        MatrizGenerica<T> resultado = crearMatriz(this.filas, otra.columnas);
+
+        for (int i = 0; i < this.filas; i++) {
+            for (int j = 0; j < otra.columnas; j++) {
+
+                T suma = ceroElemento();
+
+                for (int k = 0; k < this.columnas; k++) {
+
+                    T a = getValor(i, k);
+                    T b = otra.getValor(k, j);
+
+                    if (a == null || b == null) {
+                        throw new IllegalArgumentException("Elemento nulo");
+                    }
+
+                    suma = sumarElementos(suma, multiplicarElementos(a, b));
+                }
+
+                resultado.setValor(i, j, suma);
+            }
+        }
+
+        return resultado;
     }
 
     protected abstract MatrizGenerica<T> crearMatriz(int filas, int columnas);
@@ -36,7 +68,16 @@ public abstract class MatrizGenerica<T> {
 
     @SuppressWarnings("unchecked")
     public T[][] getMatriz() {
-        return (T[][]) matriz; // cast seguro para uso en tests
+
+        T[][] copia = (T[][]) new Number[filas][columnas];
+
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                copia[i][j] = (T) matriz[i][j];
+            }
+        }
+
+        return copia;
     }
 
     public MatrizGenerica<T> sumar(MatrizGenerica<T> otra) {

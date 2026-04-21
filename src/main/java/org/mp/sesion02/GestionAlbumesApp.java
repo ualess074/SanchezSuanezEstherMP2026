@@ -5,22 +5,21 @@ package org.mp.sesion02;
  */
 public class GestionAlbumesApp {
 
-    public static void main(String[] args) {
+    public static void runApp(String[] datos) {
 
-        Album[] albumes = new Album[FuenteDeDatos.DATOS_ALBUMES.length];
+        System.out.println("--- Álbumes cargados ---");
 
-        for (int i = 0; i < FuenteDeDatos.DATOS_ALBUMES.length; i++) {
-
+        for (int i = 0; i < datos.length; i++) {
             try {
-
-                albumes[i] = AlbumParser.parse(FuenteDeDatos.DATOS_ALBUMES[i]);
-
-                System.out.println(albumes[i]);
-
+                Album album = AlbumParser.parse(datos[i]);
+                System.out.println(album);
             } catch (MiParseadoException e) {
-
-                System.out.println("Error: " + e.getMessage());
+                System.err.println("Error procesando línea " + (i + 1) + ": " + e.getMessage());
             }
         }
+    }
+
+    public static void main(String[] args) {
+        runApp(FuenteDeDatos.DATOS_ALBUMES);
     }
 }

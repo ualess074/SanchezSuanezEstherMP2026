@@ -5,22 +5,33 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.Test;
 
-public class ArrayDinamicoTest {
+public class ArrayDinamicoObjectsTest {
 
     @Test
     public void testConstructor() {
-        ArrayDinamico<Integer> array = new ArrayDinamico<>();
+        ArrayDinamicoObjects array = new ArrayDinamicoObjects();
         assertNotNull(array);
         assertEquals(0, array.capacidad());
     }
 
     @Test
     public void testAgregarYObtenerElemento() {
-        ArrayDinamico<Integer> array = new ArrayDinamico<>();
-        array.agregar(10);
-        array.agregar(20);
-        assertEquals(10, (int) array.obtener(0));
-        assertEquals(20, (int) array.obtener(1));
+        ArrayDinamicoObjects array = new ArrayDinamicoObjects();
+        array.agregar("Hola");
+        array.agregar("Mundo");
+        assertEquals("Hola", array.obtener(0));
+        assertEquals("Mundo", array.obtener(1));
+    }
+
+    
+    @Test
+    public void testEliminarElemento() {
+        ArrayDinamicoObjects array = new ArrayDinamicoObjects();
+        array.agregar("Hola");
+        array.agregar("Mundo");
+        array.eliminar(0);
+        assertEquals("Mundo", array.obtener(0));
+        assertEquals(1, array.capacidad());
         try {
             array.eliminar(2);
             fail("Se esperaba una ArrayIndexOutOfBoundsException");
@@ -30,18 +41,8 @@ public class ArrayDinamicoTest {
     }
 
     @Test
-    public void testEliminarElemento() {
-        ArrayDinamico<Integer> array = new ArrayDinamico<>();
-        array.agregar(10);
-        array.agregar(20);
-        array.eliminar(0);
-        assertEquals(20, (int) array.obtener(0));
-        assertEquals(1, array.capacidad());
-    }
-
-    @Test
     public void testEstablecerElemento() {
-        ArrayDinamico<String> array = new ArrayDinamico<>();
+        ArrayDinamicoObjects array = new ArrayDinamicoObjects();
         array.agregar("Hola");
         array.agregar("Mundo");
         array.establecer(1, "Java");
@@ -50,9 +51,9 @@ public class ArrayDinamicoTest {
 
     @Test
     public void testCrecimientoDinamico() {
-        ArrayDinamico<Integer> array = new ArrayDinamico<>();
+        ArrayDinamicoObjects array = new ArrayDinamicoObjects();
         for (int i = 0; i < 20; i++) {
-            array.agregar(i);
+            array.agregar("Elemento" + i);
         }
         assertEquals(20, array.capacidad());
     }

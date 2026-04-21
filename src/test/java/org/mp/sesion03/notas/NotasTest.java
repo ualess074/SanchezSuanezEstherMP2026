@@ -3,45 +3,128 @@ package org.mp.sesion03.notas;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class NotasTest {
+/**
+ * Clase de prueba para la clase Notas.
+ */
+class NotasTest {
 
     @Test
-    void testAgregarNota() {
-
-        Notas notas = new Notas(3);
-
-        assertTrue(notas.agregarNota("A1",7.0));
-        assertTrue(notas.agregarNota("A2",8.0));
+    void testConstructorValidCapacity() {
+        Notas notas = new Notas(5);
+        assertNotNull(notas);
+        assertEquals(0, notas.getNumeroNotas());
     }
 
     @Test
-    void testDuplicado() {
-
-        Notas notas = new Notas(3);
-
-        notas.agregarNota("A1",7.0);
-
-        assertFalse(notas.agregarNota("A1",9.0));
+    void testConstructorInvalidCapacity() {
+        try {
+            new Notas(0);
+            fail("Se esperaba IllegalArgumentException para capacidad 0");
+        } catch (IllegalArgumentException e) {
+            assertEquals("La capacidad máxima debe ser un número positivo.", e.getMessage());
+        }
+        try {
+            new Notas(-1);
+            fail("Se esperaba IllegalArgumentException para capacidad negativa");
+        } catch (IllegalArgumentException e) {
+            assertEquals("La capacidad máxima debe ser un número positivo.", e.getMessage());
+        }
     }
 
     @Test
-    void testObtenerNota() {
-
-        Notas notas = new Notas(3);
-
-        notas.agregarNota("A1",7.5);
-
-        assertEquals(7.5, notas.obtenerNota("A1"));
+    void testAgregarNota_Success() {
+        Notas notas = new Notas(2);
+        assertTrue(notas.agregarNota("alu001", 7.5));
+        assertEquals(1, notas.getNumeroNotas());
+        assertTrue(notas.agregarNota("alu002", 9.0));
+        assertEquals(2, notas.getNumeroNotas());
     }
 
     @Test
-    void testMedia() {
+    void testAgregarNota_AlumnoExistente() {
+        Notas notas = new Notas(2);
+        notas.agregarNota("alu001", 7.5);
+        assertFalse(notas.agregarNota("alu001", 8.0)); // No debería añadirla
+        assertEquals(1, notas.getNumeroNotas());
+    }
 
+    @Test
+    void testAgregarNota_CapacidadLlena() {
+        Notas notas = new Notas(1);
+        notas.agregarNota("alu001", 7.5);
+        assertFalse(notas.agregarNota("alu002", 8.0)); // No debería añadirla
+        assertEquals(1, notas.getNumeroNotas());
+    }
+
+    @Test
+    void testAgregarNota_NotaFueraDeRango() {
+        Notas notas = new Notas(1);
+        assertFalse(notas.agregarNota("alu001", 11.0));
+        assertFalse(notas.agregarNota("alu001", -1.0));
+        assertEquals(0, notas.getNumeroNotas());
+    }
+    
+    @Test
+    void testAgregarNota_DatosInvalidos() {
+        Notas notas = new Notas(1);
+        assertFalse(notas.agregarNota(null, 7.0));
+        assertFalse(notas.agregarNota("", 7.0));
+        assertFalse(notas.agregarNota("alu001", null));
+        assertEquals(0, notas.getNumeroNotas());
+    }
+
+
+    @Test
+    void testObtenerNota_Existente() {
+        Notas notas = new Notas(2);
+        notas.agregarNota("alu001", 7.5);
+        notas.agregarNota("alu002", 9.0);
+        assertEquals(7.5, notas.obtenerNota("alu001"));
+        assertEquals(9.0, notas.obtenerNota("alu002"));
+    }
+
+    @Test
+    void testObtenerNota_NoExistente() {
+        Notas notas = new Notas(1);
+        notas.agregarNota("alu001", 7.5);
+        assertNull(notas.obtenerNota("alu002"));
+    }
+
+    @Test
+    void testObtenerNota_DatosInvalidos() {
+        Notas notas = new Notas(1);
+        notas.agregarNota("alu001", 7.5);
+        assertNull(notas.obtenerNota(null));
+        assertNull(notas.obtenerNota(""));
+    }
+
+    @Test
+    void testCalcularMedia_ConNotas() {
         Notas notas = new Notas(3);
+        notas.agregarNota("alu001", 7.0);
+        notas.agregarNota("alu002", 8.0);
+        notas.agregarNota("alu003", 9.0);
+        assertEquals(8.0, notas.calcularMedia(), 0.001); // Delta para doubles
+    }
 
-        notas.agregarNota("A1",7.0);
-        notas.agregarNota("A2",9.0);
+    @Test
+    void testCalcularMedia_SinNotas() {
+        Notas notas = new Notas(1);
+        assertEquals(0.0, notas.calcularMedia(), 0.001);
+    }
 
-        assertEquals(8.0, notas.calcularMedia());
+    @Test
+    void testListarNotas_ConNotas() {
+        Notas notas = new Notas(2);
+        notas.agregarNota("alu001", 7.5);
+        notas.agregarNota("alu002", 9.0);
+        String expected = "Alumno: alu001, Nota: 7.5\nAlumno: alu002, Nota: 9.0\n";
+        assertEquals(expected, notas.listarNotas());
+    }
+
+    @Test
+    void testListarNotas_SinNotas() {
+        Notas notas = new Notas(1);
+        assertEquals("No hay calificaciones registradas.", notas.listarNotas());
     }
 }

@@ -9,6 +9,8 @@ public final class FuenteDeDatos {
 
         "ALBUM;El Mal Querer;Rosalía;2018;CANCION;Malamente;150;CANCION;Pienso en tu mirá;193",
 
-        "ALBUM;Cuarto azul;Aitana;2025;CANCION;Trankis;200;CANCION;Superestrella;230;CANCION;LIA;180"
+        "ALBUM;Cuarto azul;Aitana;2025;CANCION;Trankis;200;CANCION;Superestrella;230;CANCION;LIA;180",
+
+        "ALBUM;Un secreto al que gritar;La La Love You;2021;CANCION;El fin del mundo;210"
     };
 }
