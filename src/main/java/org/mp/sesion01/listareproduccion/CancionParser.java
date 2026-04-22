@@ -1,24 +1,21 @@
 package org.mp.sesion01.listareproduccion;
 
-import java.text.ParseException;
-
 public class CancionParser {
 
     public static Cancion parse(String datosCancion) throws ParseException {
 
         if (datosCancion == null) {
-            throw new ParseException("Formato incorrecto", 0);
+            throw new ParseException("Formato incorrecto");
         }
 
         String[] partes = datosCancion.split(";");
 
-        // Validar formato completo
         if (partes.length != 5) {
-            throw new ParseException("Formato incorrecto", 0);
+            throw new ParseException("Formato incorrecto");
         }
 
         if (!partes[0].equals("CANCION")) {
-            throw new ParseException("Formato incorrecto", 0);
+            throw new ParseException("Formato incorrecto");
         }
 
         String titulo = partes[1];
@@ -28,7 +25,7 @@ public class CancionParser {
         try {
             duracion = Integer.parseInt(partes[3]);
         } catch (Exception e) {
-            throw new ParseException("Duración inválida", 0);
+            throw new ParseException("Duración inválida");
         }
 
         String genero = partes[4];

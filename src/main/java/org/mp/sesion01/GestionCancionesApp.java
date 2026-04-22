@@ -1,10 +1,10 @@
 package org.mp.sesion01;
 
-import java.text.ParseException;
 
 import org.mp.sesion01.listareproduccion.Cancion;
 import org.mp.sesion01.listareproduccion.CancionParser;
 import org.mp.sesion01.listareproduccion.ListaDeReproduccion;
+import org.mp.sesion01.listareproduccion.ParseException;
 
 public class GestionCancionesApp {
 
